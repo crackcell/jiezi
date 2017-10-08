@@ -5,4 +5,4 @@ package com.crackcell.jiezi.domain
   *
   * @author Menglong TAN
   */
-class Term(word: String = "", natures: Array[Nature] = Array[Nature]())
+class Term(word: String = "", natures: Array[Nature] = Array[Nature](), frequency : Long = 0)
