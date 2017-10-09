@@ -33,9 +33,9 @@ class RadixTree[E] {
 
   def get(word: String): Option[E] = Option(trie.get(word))
 
-  def findPrefixWords(prefix: String): mutable.Map[String, E] = trie.prefixMap(prefix)
+  def findCommonPrefixWords(prefix: String): mutable.Map[String, E] = trie.prefixMap(prefix)
 
-  def findLongestHeadWord(query: String): Option[(String, E)] = {
+  def findLongestPrefixWord(query: String): Option[(String, E)] = {
     if (query == null || query.length == 0 || !isStartChar(query.charAt(0))) return None
     for (i <- query.length - 1 to 0 by -1) {
       if (isEndChar(query.charAt(i))) {

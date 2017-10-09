@@ -16,7 +16,13 @@ class TermDict(val data: RadixTree[Term] = new RadixTree[Term]) extends Dict {
     data.put(term.getWord, term)
   }
 
-  def findPrefixWords(prefix: String): Seq[Term] = data.findPrefixWords(prefix).values.toSeq
+  def isStartChar(ch: Char): Boolean = data.isStartChar(ch)
 
-  def findLongestHeadWord(query: String): Option[Term] = Option(data.findLongestHeadWord(query).get._2)
+  def isMiddleChar(ch: Char): Boolean = data.isMiddleChar(ch)
+
+  def isEndChar(ch: Char): Boolean = data.isEndChar(ch)
+
+  def findPrefixWords(prefix: String): Seq[Term] = data.findCommonPrefixWords(prefix).values.toSeq
+
+  def findLongestPrefixWord(query: String): Option[Term] = Option(data.findLongestPrefixWord(query).get._2)
 }

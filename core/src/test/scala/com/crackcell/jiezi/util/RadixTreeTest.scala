@@ -14,7 +14,7 @@ class RadixTreeTest extends FunSuite {
     tree.put("word", 1)
     tree.put("world", 1)
     tree.put("wonder", 1)
-    tree.findPrefixWords("wor").foreach { case (word, value) =>
+    tree.findCommonPrefixWords("wor").foreach { case (word, value) =>
       println(s"${word} -> ${value}")
     }
   }
@@ -24,7 +24,7 @@ class RadixTreeTest extends FunSuite {
     tree.put("word", 1)
     tree.put("world", 1)
     tree.put("wonder", 1)
-    val result = tree.findLongestHeadWord("wonderful")
+    val result = tree.findLongestPrefixWord("wonderful")
     assert(result.isDefined)
     println(result.get)
   }

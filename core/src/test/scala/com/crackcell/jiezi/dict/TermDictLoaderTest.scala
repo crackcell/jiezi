@@ -12,6 +12,6 @@ class TermDictLoaderTest extends FunSuite {
   test("load") {
     val loader = new TermDictLoader(new FileToStream)
     val dict = loader.loadDict(dictPathRoot + "/core_term.dict")
-    dict.findLongestHeadWord("我是中国人").foreach(println)
+    dict.findLongestPrefixWord("我是中国人").foreach(println)
   }
 }

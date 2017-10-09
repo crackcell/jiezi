@@ -5,4 +5,6 @@ package com.crackcell.jiezi.domain
   *
   * @author Menglong TAN
   */
-class Result(terms: Array[Term])
+class Result(terms: Array[Term] = Array()) {
+  def getTerms() = terms
+}
