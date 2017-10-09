@@ -19,4 +19,14 @@ class RadixTreeTest extends FunSuite {
     }
   }
 
+  test("findLongestHeadWord") {
+    val tree = new RadixTree[Int]
+    tree.put("word", 1)
+    tree.put("world", 1)
+    tree.put("wonder", 1)
+    val result = tree.findLongestHeadWord("wonderful")
+    assert(result.isDefined)
+    println(result.get)
+  }
+
 }
