@@ -8,9 +8,7 @@ import com.crackcell.jiezi.util.RadixTree
   *
   * @author Menglong TAN
   */
-class TermDict(val data: RadixTree[Term] = new RadixTree[Term]) extends Dict {
-
-  override def newDict = new TermDict()
+class TermDict(val data: RadixTree[Term] = new RadixTree[Term]) {
 
   def put(term: Term): Unit = {
     data.put(term.getWord, term)
