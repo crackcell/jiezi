@@ -22,5 +22,9 @@ class TermDict(val data: RadixTree[Term] = new RadixTree[Term]) {
 
   def findPrefixWords(prefix: String): Seq[Term] = data.findCommonPrefixWords(prefix).values.toSeq
 
-  def findLongestPrefixWord(query: String): Option[Term] = Option(data.findLongestPrefixWord(query).get._2)
+  def findLongestPrefixWord(query: String): Option[Term] = {
+    val result = data.findLongestPrefixWord(query)
+    if (result.isEmpty) return None
+    return Some(result.get._2)
+  }
 }

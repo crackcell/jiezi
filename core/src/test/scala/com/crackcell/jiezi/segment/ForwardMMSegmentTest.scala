@@ -13,8 +13,8 @@ class ForwardMMSegmentTest extends FunSuite {
   val dictPathRoot = this.getClass.getClassLoader.getResource("").getPath + "../../../dist/dict/"
 
   val loader = new TermDictLoader(new FileToStream)
-  val dict = loader.loadDict(dictPathRoot + "/core_term.dict")
-  val segment = new ForwardMMSegment(dict)
+  val coreDict = loader.loadDict(dictPathRoot + "/core_term.dict")
+  val segment = new ForwardMMSegment(coreDict)
 
   test("parse") {
     segment.parse("新iphonesp").getTerms().foreach(println)
