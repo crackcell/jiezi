@@ -9,10 +9,10 @@ object StringUtils {
 
   def isEnglish(ch: Char): Boolean = ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z'
 
-  def isEnglishWord(ch: Char): Boolean = ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z' || ch == '-'
-
   def isDigit(ch: Char): Boolean = ch >= '0' && ch <= '9'
 
-  def isNumber(ch: Char): Boolean = ch >= '0' && ch <= '9' || ch == '.'
+  def isNumber(ch: Char): Boolean = ch >= '0' && ch <= '9' || ch == '.' || isOperator(ch)
+
+  def isOperator(ch: Char): Boolean = ch == '+' || ch == '-'
 
 }

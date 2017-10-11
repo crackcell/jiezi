@@ -16,36 +16,55 @@ class ForwardMMSegment(val dicts: TermDict*) extends Segment {
 
   override def parse(query: String): Result = {
     var i = 0
+    var offset = 0
     var start = -1
-    var end = -1
+    var isEnOrM = 'u'
     var term: Option[Term] = None
     var word: String = null
     val terms = new ArrayBuffer[Term]()
     while (i < query.length) {
       val ch = query.charAt(i)
       word = String.valueOf(ch)
-      if (isStartChar(ch)) {
-        term = findLongestHeadWord(query.substring(i, query.length))
-        if (term.isDefined) {
-          word = term.get.getWord()
-          if (word.length == 1 &&
-              (StringUtils.isEnglishWord(word.charAt(0)) || StringUtils.isDigit(word.charAt(0)))) {
-            term = None
-            if (start == -1)
-              start = i
-            else
-              end = i
-          } else {
-            terms.append(term.get)
+      if (StringUtils.isEnglish(ch)) {
+        if (start == -1) {
+          start = i
+          isEnOrM = 'e'
+        } else if (isEnOrM == 'm') {
+          if (offset != start) throw new WordsegException("imcompleted wordseg")
+          terms.append(new Term(word = query.substring(start, i), natures = Array(new Nature("n"))))
+          start = i
+          offset = i
+          isEnOrM = 'e'
+        } else if (isEnOrM != 'e') throw new WordsegException("invalid stat")
+      } else if (StringUtils.isNumber(ch) || start == -1 && StringUtils.isOperator(ch)) {
+        if (start == -1) {
+          start = i
+          isEnOrM = 'm'
+        } else if (isEnOrM == 'e') {
+          if (offset != start) throw new WordsegException("imcompleted wordseg")
+          terms.append(new Term(word = query.substring(start, i), natures = Array(new Nature("e"))))
+          start = i
+          offset = i
+          isEnOrM = 'e'
+        } else if (isEnOrM != 'm') throw new WordsegException("invalid stat")
+      } else {
+        if (isStartChar(ch)) {
+          term = findLongestHeadWord(query.substring(i, query.length))
+          if (term.isDefined) {
+            word = term.get.getWord()
             if (start != -1) {
               val nature =
-                if (StringUtils.isEnglishWord(query.charAt(start))) "en"
-                else if (StringUtils.isNumber(query.charAt(start))) "m"
+                if (StringUtils.isEnglish(query.charAt(start))) "en"
+                else if (StringUtils.isDigit(query.charAt(start)) || '.' == query.charAt(start)) "m"
                 else throw new WordsegException("invalid stat")
-              terms.append(new Term(word = query.substring(start, end + 1), natures = Array(new Nature(nature))))
+              if (offset != start) throw new WordsegException("imcompleted wordseg")
+              terms.append(new Term(word = query.substring(start, i), natures = Array(new Nature(nature))))
               start = -1
-              end = -1
+              offset = i
             }
+            if (offset != i) throw new WordsegException("imcompleted wordseg")
+            terms.append(term.get)
+            offset = i + term.get.getWord().length
           }
         }
       }
@@ -54,12 +73,13 @@ class ForwardMMSegment(val dicts: TermDict*) extends Segment {
 
     if (start != -1) {
       val nature =
-        if (StringUtils.isEnglishWord(query.charAt(start)))
+        if (StringUtils.isEnglish(query.charAt(start)))
           "en"
         else if (StringUtils.isNumber(query.charAt(start)))
           "m"
         else throw new WordsegException("invalid stat")
-      terms.append(new Term(word = query.substring(start, end + 1), natures = Array(new Nature(nature))))
+      if (offset != start) throw new WordsegException("imcompleted wordseg")
+      terms.append(new Term(word = query.substring(start, i - 1), natures = Array(new Nature(nature))))
     }
 
     new Result(terms = terms.toArray)
