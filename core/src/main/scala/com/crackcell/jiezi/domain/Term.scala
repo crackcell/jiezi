@@ -7,7 +7,13 @@ package com.crackcell.jiezi.domain
   */
 class Term(word: String = "", natures: Array[Nature] = Array[Nature](), frequency : Long = 0) {
 
+  def this(word: String, nature: Nature) = this(word, Array(nature))
+
+  def this(word: String, nature: String) = this(word, new Nature(nature))
+
   def getWord() = word
+
+  def getNatures() = natures
 
   override def toString: String = s"${word} [n: ${natures.mkString(",")}] [f: ${frequency}]"
 }

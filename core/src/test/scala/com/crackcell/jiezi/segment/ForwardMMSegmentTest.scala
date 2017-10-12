@@ -16,18 +16,12 @@ class ForwardMMSegmentTest extends FunSuite {
   val coreDict = loader.loadDict(dictPathRoot + "/core_term.dict")
   val segment = new ForwardMMSegment(coreDict)
 
-  /*
   test("parse") {
-    segment.parse("新iphonesp").getTerms().foreach(println)
+    segment.parse("新iphonesp全新").getTerms().foreach(println)
   }
 
   test("parse number and english char") {
     segment.parse("+100.01sp198+109non-smoking").getTerms().foreach(println)
-  }
-  */
-
-  test("parse number and english char") {
-    segment.parse("+1s1").getTerms().foreach(println)
   }
 
 }

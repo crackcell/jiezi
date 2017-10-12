@@ -15,71 +15,69 @@ import scala.collection.mutable.ArrayBuffer
 class ForwardMMSegment(val dicts: TermDict*) extends Segment {
 
   override def parse(query: String): Result = {
-    var i = 0
-    var offset = 0
-    var start = -1
-    var isEnOrM = 'u'
-    var term: Option[Term] = None
-    var word: String = null
     val terms = new ArrayBuffer[Term]()
-    while (i < query.length) {
-      val ch = query.charAt(i)
-      word = String.valueOf(ch)
-      if (StringUtils.isEnglish(ch)) {
-        if (start == -1) {
-          start = i
-          isEnOrM = 'e'
-        } else if (isEnOrM == 'm') {
-          if (offset != start) throw new WordsegException("imcompleted wordseg")
-          terms.append(new Term(word = query.substring(start, i), natures = Array(new Nature("n"))))
-          start = i
-          offset = i
-          isEnOrM = 'e'
-        } else if (isEnOrM != 'e') throw new WordsegException("invalid stat")
-      } else if (StringUtils.isNumber(ch) || start == -1 && StringUtils.isOperator(ch)) {
-        if (start == -1) {
-          start = i
-          isEnOrM = 'm'
-        } else if (isEnOrM == 'e') {
-          if (offset != start) throw new WordsegException("imcompleted wordseg")
-          terms.append(new Term(word = query.substring(start, i), natures = Array(new Nature("e"))))
-          start = i
-          offset = i
-          isEnOrM = 'e'
-        } else if (isEnOrM != 'm') throw new WordsegException("invalid stat")
-      } else {
-        if (isStartChar(ch)) {
-          term = findLongestHeadWord(query.substring(i, query.length))
-          if (term.isDefined) {
-            word = term.get.getWord()
-            if (start != -1) {
-              val nature =
-                if (StringUtils.isEnglish(query.charAt(start))) "en"
-                else if (StringUtils.isDigit(query.charAt(start)) || '.' == query.charAt(start)) "m"
-                else throw new WordsegException("invalid stat")
-              if (offset != start) throw new WordsegException("imcompleted wordseg")
-              terms.append(new Term(word = query.substring(start, i), natures = Array(new Nature(nature))))
-              start = -1
-              offset = i
-            }
-            if (offset != i) throw new WordsegException("imcompleted wordseg")
-            terms.append(term.get)
-            offset = i + term.get.getWord().length
-          }
-        }
-      }
-      i = i + word.length
-    }
 
-    if (start != -1) {
-      val nature =
-        if (StringUtils.isEnglish(query.charAt(start)))
-          "en"
-        else if (StringUtils.isNumber(query.charAt(start)))
-          "m"
-        else throw new WordsegException("invalid stat")
-      if (offset != start) throw new WordsegException("imcompleted wordseg")
-      terms.append(new Term(word = query.substring(start, i - 1), natures = Array(new Nature(nature))))
+    // state:
+    // 1: try dict
+    // 2: eng
+    // 3: num
+
+    var offset = 0
+    var ch = '*'
+    var word: String = null
+    var state = 1
+    var lastSpecialCharType = '*'
+    var newTermOffset = 0
+    var term: Option[Term] = None
+
+    while (offset < query.length) {
+      ch = query.charAt(offset)
+
+      state match {
+        case 1 =>
+          term = findLongestHeadWord(query.substring(offset, query.length))
+          if (term.isEmpty) throw new WordsegException(s"incomplete wordseg for offset: ${offset}")
+          word = term.get.getWord()
+          val firstCh = word.charAt(0)
+          if (word.length == 1 && StringUtils.isEnglish(firstCh)) state = 2
+          else if (word.length == 1 && StringUtils.isNumber(firstCh)) state = 3
+          else {
+            if (newTermOffset < offset) {
+              val nature =
+                if (lastSpecialCharType == 'e') "en"
+                else if (lastSpecialCharType == 'm') "m"
+                else ""
+              terms.append(new Term(query.substring(newTermOffset, offset), nature))
+              newTermOffset = offset
+            }
+            terms.append(term.get)
+            offset = offset + word.length
+            newTermOffset = offset
+          }
+        case 2 =>
+          if (lastSpecialCharType == 'm') {
+            terms.append(new Term(query.substring(newTermOffset, offset), "m"))
+            newTermOffset = offset
+          }
+          if (offset == query.length - 1) {
+            terms.append(new Term(query.substring(newTermOffset, offset + 1), "en"))
+          }
+          state = 1
+          lastSpecialCharType = 'e'
+          offset = offset + 1
+        case 3 =>
+          if (lastSpecialCharType == 'e') {
+            terms.append(new Term(query.substring(newTermOffset, offset), "en"))
+            newTermOffset = offset
+          }
+          if (offset == query.length - 1) {
+            terms.append(new Term(query.substring(newTermOffset, offset + 1), "m"))
+          }
+          state = 1
+          lastSpecialCharType = 'm'
+          offset = offset + 1
+      }
+
     }
 
     new Result(terms = terms.toArray)
