@@ -2,7 +2,7 @@ package com.crackcell.jiezi.segment
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.TermDict
-import com.crackcell.jiezi.domain.{Nature, Result, Term}
+import com.crackcell.jiezi.domain.{Result, Term}
 import com.crackcell.jiezi.util.StringUtils
 
 import scala.collection.mutable.ArrayBuffer
@@ -12,7 +12,14 @@ import scala.collection.mutable.ArrayBuffer
   *
   * @author Menglong TAN
   */
-class ForwardMMSegment(val dicts: TermDict*) extends Segment {
+class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends Segment {
+
+  def this(dicts: TermDict*) = this("error", dicts: _*)
+
+  def setHandleInvalid(handleInvalid: String): ForwardMMSegment = {
+    this.handleInvalid = handleInvalid
+    this
+  }
 
   override def parse(query: String): Result = {
     val terms = new ArrayBuffer[Term]()
@@ -36,23 +43,34 @@ class ForwardMMSegment(val dicts: TermDict*) extends Segment {
       state match {
         case 1 =>
           term = findLongestHeadWord(query.substring(offset, query.length))
-          if (term.isEmpty) throw new WordsegException(s"incomplete wordseg for offset: ${offset}")
-          word = term.get.getWord()
-          val firstCh = word.charAt(0)
-          if (word.length == 1 && StringUtils.isEnglish(firstCh)) state = 2
-          else if (word.length == 1 && StringUtils.isNumber(firstCh)) state = 3
-          else {
-            if (newTermOffset < offset) {
-              val nature =
-                if (lastSpecialCharType == 'e') "en"
-                else if (lastSpecialCharType == 'm') "m"
-                else ""
-              terms.append(new Term(query.substring(newTermOffset, offset), nature))
+          if (term.isEmpty) {
+            handleInvalid match {
+              case "error" => throw new WordsegException(s"incomplete wordseg: query=${query}, offset=${offset}")
+              case "skip" =>
+                offset = offset + 1
+                newTermOffset = offset
+                lastSpecialCharType = '*'
+            }
+          } else {
+
+            word = term.get.getWord()
+            val firstCh = word.charAt(0)
+            if (word.length == 1 && StringUtils.isEnglish(firstCh)) state = 2
+            else if (word.length == 1 && StringUtils.isNumber(firstCh)) state = 3
+            else {
+              if (newTermOffset < offset) {
+                val nature =
+                  if (lastSpecialCharType == 'e') "en"
+                  else if (lastSpecialCharType == 'm') "m"
+                  else ""
+                terms.append(new Term(query.substring(newTermOffset, offset), nature))
+                newTermOffset = offset
+              }
+              terms.append(term.get)
+              offset = offset + word.length
               newTermOffset = offset
             }
-            terms.append(term.get)
-            offset = offset + word.length
-            newTermOffset = offset
+
           }
         case 2 =>
           if (lastSpecialCharType == 'm') {
