@@ -4,7 +4,7 @@
     <groupId>com.crackcell</groupId>
     <artifactId>jiezi</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <modules>
         <module>core</module>
         <module>demo</module>
@@ -12,7 +12,6 @@
     </modules>
 
     <!-- for maven repo -->
-    <name>${project.groupId}:${project.artifactId}</name>
     <description>A Chinese Word Segmenter</description>
     <url>https://github.com/crackcell/jiezi</url>
     <licenses>
@@ -30,23 +29,22 @@
         </developer>
     </developers>
     <scm>
-        <connection>
-            scm:git:https://github.com/crackcell/jiezi.git
-        </connection>
-        <developerConnection>
-            scm:git:https://github.com/crackcell/jiezi.git
-        </developerConnection>
+        <connection>scm:git:https://github.com/crackcell/jiezi.git</connection>
+        <developerConnection>scm:git:https://github.com/crackcell/jiezi.git</developerConnection>
         <url>https://github.com/crackcell/jiezi</url>
         <tag>v1.0</tag>
     </scm>
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus snapshot repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>sonatype-nexus-staging</id>
+            <name>Sonatype Nexus release repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
     <!-- end for maven repo -->
