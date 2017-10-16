@@ -10,7 +10,7 @@ import scala.collection.JavaConversions._
   *
   * @author Menglong TAN
   */
-class RadixTree[E] {
+class RadixTree[E] extends Serializable {
 
   import RadixTree._
 

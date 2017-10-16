@@ -5,7 +5,7 @@ package com.crackcell.jiezi.domain
   *
   * @author Menglong TAN
   */
-class Term(word: String = "", natures: Array[Nature] = Array[Nature](), frequency : Long = 0) {
+class Term(word: String = "", natures: Array[Nature] = Array[Nature](), frequency : Long = 0) extends Serializable {
 
   def this(word: String, nature: Nature) = this(word, Array(nature))
 

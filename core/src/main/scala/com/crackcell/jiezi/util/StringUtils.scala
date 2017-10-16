@@ -5,7 +5,7 @@ package com.crackcell.jiezi.util
   *
   * @author Menglong TAN
   */
-object StringUtils {
+object StringUtils extends Serializable {
 
   def isEnglish(ch: Char): Boolean = ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z'
 

@@ -7,6 +7,6 @@ import com.crackcell.jiezi.domain.Result
   *
   * @author Menglong TAN
   */
-trait Segment {
+trait Segment extends Serializable {
   def parse(query: String): Result
 }

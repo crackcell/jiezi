@@ -5,6 +5,6 @@ package com.crackcell.jiezi.domain
   *
   * @author Menglong TAN
   */
-class Result(terms: Array[Term] = Array()) {
+class Result(terms: Array[Term] = Array()) extends Serializable {
   def getTerms() = terms
 }
