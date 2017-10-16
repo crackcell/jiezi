@@ -5,11 +5,11 @@
     <parent>
         <artifactId>jiezi</artifactId>
         <groupId>com.crackcell</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>jiezi-core</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
 
     <dependencies>
         <!-- Scala -->

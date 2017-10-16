@@ -12,6 +12,7 @@
     </modules>
 
     <!-- for maven repo -->
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>A Chinese Word Segmenter</description>
     <url>https://github.com/crackcell/jiezi</url>
     <licenses>
@@ -32,7 +33,6 @@
         <connection>scm:git:https://github.com/crackcell/jiezi.git</connection>
         <developerConnection>scm:git:https://github.com/crackcell/jiezi.git</developerConnection>
         <url>https://github.com/crackcell/jiezi</url>
-        <tag>v1.0</tag>
     </scm>
     <distributionManagement>
         <snapshotRepository>
