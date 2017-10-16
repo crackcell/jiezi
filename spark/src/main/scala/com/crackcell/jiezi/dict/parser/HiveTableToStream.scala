@@ -1,5 +1,7 @@
 package com.crackcell.jiezi.dict.parser
 
+import java.io.ByteArrayInputStream
+
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.sql.{Row, SparkSession}
 
@@ -25,15 +27,13 @@ class HiveTableToStream extends PathToStream {
     }
 
     val df = spark.sql(s"SELECT * FROM ${table} WHERE ${conditions}")
-    df.collect().map(rowToLine).filter(_.size > 0)
+
+    new ByteArrayInputStream(df.collect().map(rowToLine).filter(_.size > 0).mkString("\n").getBytes())
   }
 
   private def rowToLine(row: Row): String = {
     row.schema.fields.map { field =>
-
-
-
-
-    }
+      field.toString()
+    }.mkString("\t")
   }
 }
