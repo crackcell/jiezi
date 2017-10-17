@@ -36,7 +36,7 @@ class HiveTableToStreamTest extends FunSuite {
   val segment = new ForwardMMSegment(coreDict)
 
   test("Wordseg with default dict") {
-    segment.setHandleInvalid("skip").parse("17年全新时尚连衣裙").getTerms().foreach(println)
+    segment.setHandleInvalid("skip").parse("17年全新时尚连衣裙").terms.foreach(println)
   }
 
 }

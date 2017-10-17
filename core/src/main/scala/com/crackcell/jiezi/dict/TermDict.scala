@@ -11,7 +11,7 @@ import com.crackcell.jiezi.util.RadixTree
 class TermDict(val data: RadixTree[Term] = new RadixTree[Term]) extends Serializable {
 
   def put(term: Term): Unit = {
-    data.put(term.getWord, term)
+    data.put(term.word, term)
   }
 
   def isStartChar(ch: Char): Boolean = data.isStartChar(ch)

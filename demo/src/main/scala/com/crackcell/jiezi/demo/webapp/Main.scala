@@ -71,7 +71,7 @@ object Main {
 
       val query = servletRequest.getParameter("query")
       if (query != null) {
-        val terms = segment.parse(query).getTerms
+        val terms = segment.parse(query).terms
         val content = terms.mkString(" <br/>\n")
         logger.info(s"query: ${query}")
         resp = resp.replace("##result##", content)

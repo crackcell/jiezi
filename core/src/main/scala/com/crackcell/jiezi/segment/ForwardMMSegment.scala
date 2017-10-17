@@ -28,7 +28,6 @@ class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends 
     // 1: try dict
     // 2: eng
     // 3: num
-
     var offset = 0
     var ch = '*'
     var word: String = null
@@ -52,8 +51,8 @@ class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends 
                 lastSpecialCharType = '*'
             }
           } else {
-
-            word = term.get.getWord()
+            term = Some(new Term(term.get))
+            word = term.get.word
             val firstCh = word.charAt(0)
             if (word.length == 1 && StringUtils.isEnglish(firstCh)) state = 2
             else if (word.length == 1 && StringUtils.isNumber(firstCh)) state = 3
@@ -111,8 +110,8 @@ class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends 
     var term: Option[Term] = None
     for (dict <- dicts) {
       val t = dict.findLongestPrefixWord(query)
-      if (t.isDefined && t.get.getWord().length > maxlen) {
-        maxlen = t.get.getWord().length
+      if (t.isDefined && t.get.word.length > maxlen) {
+        maxlen = t.get.word.length
         term = t
       }
     }
