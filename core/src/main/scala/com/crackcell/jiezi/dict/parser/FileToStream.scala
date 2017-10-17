@@ -9,7 +9,7 @@ import com.crackcell.jiezi.WordsegException
   *
   * @author Menglong TAN
   */
-class FileToStream extends PathToStream {
+class FileToStream extends ToStream[String] {
   override def toStream(path: String) = {
     val newPath =
       if (path.startsWith("file://"))

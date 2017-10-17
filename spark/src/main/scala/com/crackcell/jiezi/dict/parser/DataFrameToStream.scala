@@ -3,34 +3,20 @@ package com.crackcell.jiezi.dict.parser
 import java.io.ByteArrayInputStream
 
 import com.crackcell.jiezi.WordsegException
-import org.apache.commons.logging.LogFactory
 import org.apache.spark.sql.types._
-import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 /**
   * 将Hive表路径转换成流
   *
   * @author Menglong TAN
   */
-class HiveTableToStream extends PathToStream {
-
-  private val logger = LogFactory.getLog(classOf[HiveTableToStream])
+class DataFrameToStream extends ToStream[DataFrame] {
 
   private val spark = SparkSession.builder().enableHiveSupport().getOrCreate()
 
-  override def toStream(path: String) = {
-    val tokens = path.split("/")
-    val table = tokens(0)
-    val condSize = tokens.length - 1
-    val conditions = if (tokens.length > 1) {
-      tokens.drop(1).mkString(" AND ")
-    } else {
-      ""
-    }
-
-    val df = spark.sql(s"SELECT * FROM ${table} WHERE ${conditions}")
-    val data = df.collect().map(rowToLine).filter(_.size > 0).mkString("\n")
-
+  override def toStream(dataframe: DataFrame) = {
+    val data = dataframe.collect().map(rowToLine).filter(_.size > 0).mkString("\n")
     new ByteArrayInputStream(data.getBytes())
   }
 

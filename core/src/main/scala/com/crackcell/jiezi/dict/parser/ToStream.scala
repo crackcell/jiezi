@@ -7,6 +7,6 @@ import java.io.InputStream
   *
   * @author Menglong TAN
   */
-trait PathToStream extends Serializable {
-  def toStream(path: String): InputStream
+trait ToStream[S] extends Serializable {
+  def toStream(source: S): InputStream
 }

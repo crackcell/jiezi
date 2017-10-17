@@ -9,11 +9,11 @@ import com.crackcell.jiezi.WordsegException
   *
   * @author Menglong TAN
   */
-abstract class DictLoader[D](val path2stream: PathToStream) extends Serializable {
+abstract class DictLoader[D, S](val toStream: ToStream[S]) extends Serializable {
 
-  def loadDict(location: String): D = {
+  def loadDict(source: S): D = {
     val dict = newDict
-    val br = new BufferedReader(new InputStreamReader(path2stream.toStream(location)))
+    val br = new BufferedReader(new InputStreamReader(toStream.toStream(source)))
     try {
       var line = br.readLine()
       while (line != null) {

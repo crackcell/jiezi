@@ -9,7 +9,7 @@ import com.crackcell.jiezi.domain.{Nature, Term}
   *
   * @author Menglong TAN
   */
-class TermDictLoader(val pathToStream: PathToStream) extends DictLoader[TermDict](pathToStream) {
+class TermDictLoader[S](val tostream: ToStream[S]) extends DictLoader[TermDict, S](tostream) {
 
   override protected def newDict = new TermDict()
 
