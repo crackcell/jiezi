@@ -41,33 +41,40 @@ class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends 
 
       state match {
         case 1 =>
-          term = findLongestHeadWord(query.substring(offset, query.length))
-          if (term.isEmpty) {
-            handleInvalid match {
-              case "error" => throw new WordsegException(s"incomplete wordseg: query=${query}, offset=${offset}")
-              case "skip" =>
-                offset = offset + 1
-                newTermOffset = offset
-                lastSpecialCharType = '*'
-            }
+          if (!containsChar(ch)) { // 在字典里面没出现过的字符，跳过
+            offset = offset + 1
+            newTermOffset = offset
+            lastSpecialCharType = '*'
           } else {
-            term = Some(new Term(term.get))
-            word = term.get.word
-            val firstCh = word.charAt(0)
-            if (word.length == 1 && StringUtils.isEnglish(firstCh)) state = 2
-            else if (word.length == 1 && StringUtils.isNumber(firstCh)) state = 3
-            else {
-              if (newTermOffset < offset) {
-                val nature =
-                  if (lastSpecialCharType == 'e') "en"
-                  else if (lastSpecialCharType == 'm') "m"
-                  else ""
-                terms.append(new Term(query.substring(newTermOffset, offset), nature))
+
+            term = findLongestHeadWord(query.substring(offset, query.length))
+            if (term.isEmpty) {
+              handleInvalid match {
+                case "error" => throw new WordsegException(s"incomplete wordseg: query=${query}, offset=${offset}")
+                case "skip" =>
+                  offset = offset + 1
+                  newTermOffset = offset
+                  lastSpecialCharType = '*'
+              }
+            } else {
+              term = Some(new Term(term.get))
+              word = term.get.word
+              val firstCh = word.charAt(0)
+              if (word.length == 1 && StringUtils.isEnglish(firstCh)) state = 2
+              else if (word.length == 1 && StringUtils.isNumber(firstCh)) state = 3
+              else {
+                if (newTermOffset < offset) {
+                  val nature =
+                    if (lastSpecialCharType == 'e') "en"
+                    else if (lastSpecialCharType == 'm') "m"
+                    else ""
+                  terms.append(new Term(query.substring(newTermOffset, offset), nature))
+                  newTermOffset = offset
+                }
+                terms.append(term.get)
+                offset = offset + word.length
                 newTermOffset = offset
               }
-              terms.append(term.get)
-              offset = offset + word.length
-              newTermOffset = offset
             }
 
           }
@@ -100,9 +107,19 @@ class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends 
     new Result(terms = terms.toArray)
   }
 
+  protected def containsChar(ch: Char): Boolean = {
+    for (dict <- dicts) if (dict.containsChar(ch)) return true
+    false
+  }
+
   protected def isStartChar(ch: Char): Boolean = {
     for (dict <- dicts) if (dict.isStartChar(ch)) return true
-    return false
+    false
+  }
+
+  protected def isEndChar(ch: Char): Boolean = {
+    for (dict <- dicts) if (dict.isEndChar(ch)) return true
+    false
   }
 
   protected def findLongestHeadWord(query: String): Option[Term] = {
@@ -116,11 +133,6 @@ class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends 
       }
     }
     term
-  }
-
-  protected def isEndChar(ch: Char): Boolean = {
-    for (dict <- dicts) if (dict.isEndChar(ch)) return true
-    return false
   }
 
 }

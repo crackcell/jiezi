@@ -12,11 +12,11 @@ import org.apache.spark.sql.{Row, SparkSession}
   *
   * @author Menglong TAN
   */
-class TableToStream extends ToStream[String] {
+class TableToStream extends SQLToStream {
 
   private val logger = LogFactory.getLog(classOf[TableToStream])
 
-  private val spark = SparkSession.builder().enableHiveSupport().getOrCreate()
+  private lazy val spark = SparkSession.builder().getOrCreate()
 
   override def toStream(path: String) = {
     val tokens = path.split("/")
@@ -28,10 +28,7 @@ class TableToStream extends ToStream[String] {
       ""
     }
 
-    val df = spark.sql(s"SELECT * FROM ${table} WHERE ${conditions}")
-    val data = df.collect().map(rowToLine).filter(_.size > 0).mkString("\n")
-
-    new ByteArrayInputStream(data.getBytes())
+    super.toStream(s"SELECT * FROM ${table} WHERE ${conditions}")
   }
 
   private def rowToLine(row: Row): String = {

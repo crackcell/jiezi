@@ -17,7 +17,7 @@ class ForwardMMSegmentTest extends FunSuite {
   val segment = new ForwardMMSegment(coreDict)
 
   test("parse") {
-    segment.parse("新iphonesp全新").terms.foreach(println)
+    segment.parse(" 新iphonesp全新").terms.foreach(println)
   }
 
   test("parse number and english char") {

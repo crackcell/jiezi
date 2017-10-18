@@ -17,6 +17,8 @@ class RadixTree[E] extends Serializable {
   val trie = new PatriciaTrie[E]()
   val status = new mutable.HashMap[Char, Int]()
 
+  def containsChar(ch: Char): Boolean = status.contains(ch)
+
   def isStartChar(ch: Char): Boolean = (getCharStatus(ch) & START_CHAR) != 0
 
   def isMiddleChar(ch: Char): Boolean = (getCharStatus(ch) & MIDDLE_CHAR) != 0

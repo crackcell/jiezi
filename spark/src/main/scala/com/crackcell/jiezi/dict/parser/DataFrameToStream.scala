@@ -13,7 +13,7 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
   */
 class DataFrameToStream extends ToStream[DataFrame] {
 
-  private val spark = SparkSession.builder().enableHiveSupport().getOrCreate()
+  private lazy val spark = SparkSession.builder().getOrCreate()
 
   override def toStream(dataframe: DataFrame) = {
     val data = dataframe.collect().map(rowToLine).filter(_.size > 0).mkString("\n")

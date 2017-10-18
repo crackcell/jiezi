@@ -56,7 +56,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.test.skip>true</maven.test.skip>
+        <!-- <maven.test.skip>true</maven.test.skip> -->
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <maven-shade-plugin.version>2.2</maven-shade-plugin.version>
         <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>

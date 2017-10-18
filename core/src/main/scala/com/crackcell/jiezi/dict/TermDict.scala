@@ -14,6 +14,8 @@ class TermDict(val data: RadixTree[Term] = new RadixTree[Term]) extends Serializ
     data.put(term.word, term)
   }
 
+  def containsChar(ch: Char): Boolean = data.containsChar(ch)
+
   def isStartChar(ch: Char): Boolean = data.isStartChar(ch)
 
   def isMiddleChar(ch: Char): Boolean = data.isMiddleChar(ch)

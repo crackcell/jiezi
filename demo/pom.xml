@@ -72,7 +72,7 @@
                                     <mainClass>com.crackcell.jiezi.demo.webapp.Main</mainClass>
                                 </transformer>
                             </transformers>
-                            <minimizeJar>false</minimizeJar>
+                            <minimizeJar></minimizeJar>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>with-dependencies</shadedClassifierName>
                             <filters>
