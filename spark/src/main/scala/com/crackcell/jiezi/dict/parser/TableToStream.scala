@@ -44,7 +44,7 @@ class TableToStream extends ToStream[String] {
         case LongType => row.getAs[Long](f.name).toString
         case FloatType => row.getAs[Float](f.name).toString
         case DoubleType => row.getAs[Double](f.name).toString
-        case ArrayType(StringType, false) => row.getSeq[String](index).mkString(",")
+        case ArrayType(StringType, _) => row.getSeq[String](index).mkString(",")
         case _ => throw new WordsegException(s"invalid type: ${f.name}, ${f.dataType}")
       }
     }.mkString("\t")
