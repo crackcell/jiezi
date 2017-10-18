@@ -11,9 +11,9 @@ import org.scalatest.FunSuite
   * @author Menglong TAN
   */
 class DataFrameToStreamTest extends FunSuite {
-  lazy val spark = SparkSession.builder().master("local[*]")
-      .enableHiveSupport().config("hive.exec.dynamic.partition.mode", "nonstrict")
-      .getOrCreate()
+
+  lazy val spark = SparkSession.builder().master("local[*]").enableHiveSupport().getOrCreate()
+
   spark.sparkContext.setLogLevel("warn")
 
   // 准备数据
