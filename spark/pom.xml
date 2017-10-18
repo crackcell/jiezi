@@ -67,7 +67,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <minimizeJar></minimizeJar>
+                            <minimizeJar>false</minimizeJar>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>with-dependencies</shadedClassifierName>
                             <filters>
