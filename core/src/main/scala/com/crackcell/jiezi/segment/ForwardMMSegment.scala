@@ -21,7 +21,8 @@ class ForwardMMSegment(var handleInvalid: String, val dicts: TermDict*) extends 
     this
   }
 
-  override def parse(query: String): Result = {
+  override def parse(q: String): Result = {
+    val query = q.toLowerCase()
     val terms = new ArrayBuffer[Term]()
 
     // state:

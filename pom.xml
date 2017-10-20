@@ -68,7 +68,6 @@
         <scala.version>2.11.8</scala.version>
         <scala.compat.version>2.11</scala.compat.version>
         <scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
-        <specs2-core.verison>2.4.16</specs2-core.verison>
         <scalatest.version>3.0.1</scalatest.version>
         <scopt.version>3.5.0</scopt.version>
 
@@ -107,11 +106,13 @@
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-sql_${scala.compat.version}</artifactId>
                 <version>${spark.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-hive_${scala.compat.version}</artifactId>
                 <version>${spark.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- Third party dependencies -->

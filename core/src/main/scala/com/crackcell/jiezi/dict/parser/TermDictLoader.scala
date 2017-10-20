@@ -23,7 +23,7 @@ class TermDictLoader[S](val tostream: ToStream[S]) extends DictLoader[TermDict, 
 
     dict.put(
       new Term(
-        word = tokens(0),
+        word = tokens(0).trim.toLowerCase(),
         natures = tokens(1).split(",").map(token => new Nature(nature = token.trim)),
         frequency = tokens(2).trim.toLong
       )
