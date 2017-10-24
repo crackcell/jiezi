@@ -1,6 +1,6 @@
 package com.crackcell.jiezi.segment
 
-import com.crackcell.jiezi.dict.parser.{FileToStream, TermDictLoader}
+import com.crackcell.jiezi.dict.loader.{FileToStream, TermDictLoader}
 import org.scalatest.FunSuite
 
 /**

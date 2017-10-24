@@ -1,4 +1,4 @@
-package com.crackcell.jiezi.dict.parser
+package com.crackcell.jiezi.dict.loader
 
 import org.apache.spark.sql.SparkSession
 

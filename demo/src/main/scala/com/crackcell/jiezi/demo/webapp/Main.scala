@@ -2,7 +2,7 @@ package com.crackcell.jiezi.demo.webapp
 
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
-import com.crackcell.jiezi.dict.parser.{FileToStream, TermDictLoader}
+import com.crackcell.jiezi.dict.loader.{FileToStream, TermDictLoader}
 import com.crackcell.jiezi.segment.{ForwardMMSegment, Segment}
 import org.apache.commons.logging.LogFactory
 import org.eclipse.jetty.server.handler.AbstractHandler

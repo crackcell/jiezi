@@ -1,23 +1,34 @@
-package com.crackcell.jiezi.dict.parser
+package com.crackcell.jiezi.dict.loader
 
 import java.io.ByteArrayInputStream
 
 import com.crackcell.jiezi.WordsegException
+import org.apache.commons.logging.LogFactory
 import org.apache.spark.sql.types._
-import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+import org.apache.spark.sql.{Row, SparkSession}
 
 /**
   * 将Hive表路径转换成流
   *
   * @author Menglong TAN
   */
-class DataFrameToStream extends ToStream[DataFrame] {
+class TableToStream extends SQLToStream {
+
+  private val logger = LogFactory.getLog(classOf[TableToStream])
 
   private lazy val spark = SparkSession.builder().getOrCreate()
 
-  override def toStream(dataframe: DataFrame) = {
-    val data = dataframe.collect().map(rowToLine).filter(_.size > 0).mkString("\n")
-    new ByteArrayInputStream(data.getBytes())
+  override def toStream(path: String) = {
+    val tokens = path.split("/")
+    val table = tokens(0)
+    val condSize = tokens.length - 1
+    val conditions = if (tokens.length > 1) {
+      tokens.drop(1).mkString(" AND ")
+    } else {
+      ""
+    }
+
+    super.toStream(s"SELECT * FROM ${table} WHERE ${conditions}")
   }
 
   private def rowToLine(row: Row): String = {
