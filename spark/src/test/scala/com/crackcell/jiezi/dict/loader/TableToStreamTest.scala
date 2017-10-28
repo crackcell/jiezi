@@ -32,8 +32,9 @@ class TableToStreamTest extends FunSuite {
   ).createOrReplaceTempView("default")
 
   val loader = new TermDictLoader(new TableToStream)
-  val coreDict = loader.loadDict("default")
-  val segment = new ForwardMMSegment(coreDict)
+  val segment = new ForwardMMSegment(Array(
+    loader.loadDict("default")
+  ))
 
   test("Wordseg with default dict") {
     segment.setHandleInvalid("skip").parse("17年全新时尚连衣裙").terms.foreach(println)

@@ -32,8 +32,9 @@ class SQLToStreamTest extends FunSuite {
   ).createOrReplaceTempView("default")
 
   val loader = new TermDictLoader(new SQLToStream)
-  val coreDict = loader.loadDict("select * from default")
-  val segment = new ForwardMMSegment(coreDict)
+  val segment = new ForwardMMSegment(Array(
+    loader.loadDict("select * from default")
+  ))
 
   test("Wordseg with default dict") {
     segment.setHandleInvalid("skip").parse("17年全新时尚连衣裙").terms.foreach(println)

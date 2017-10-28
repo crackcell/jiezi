@@ -2,29 +2,27 @@ package com.crackcell.jiezi.dict.loader
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.TermDict
-import com.crackcell.jiezi.domain.{Nature, Term}
+import com.crackcell.jiezi.domain.{POS, POSArray, Term}
 
 /**
   * TermDict加载器
   *
   * @author Menglong TAN
   */
-class TermDictLoader[S](val tostream: ToStream[S]) extends DictLoader[TermDict, S](tostream) {
+class TermDictLoader[S](override val toStream: ToStream[S]) extends DictLoader[TermDict, S] {
 
   override protected def newDict = new TermDict()
 
   override protected def parseLine(line: String, dict: TermDict): Unit = {
-    val newLine = line.trim.toLowerCase()
-    if (newLine.length == 0) return
-    val tokens = newLine.split("\t")
+    val tokens = line.toLowerCase.split("\t")
     if (tokens.length != 3) {
       throw new WordsegException(s"invalid line: ${line}")
     }
 
     dict.put(
       new Term(
-        word = tokens(0).trim.toLowerCase(),
-        natures = tokens(1).split(",").map(token => new Nature(nature = token.trim)),
+        word = tokens(0).toLowerCase(),
+        pos = new POSArray(tokens(1).split(",").map(token => new POS(pos = token.trim))),
         frequency = tokens(2).trim.toLong
       )
     )

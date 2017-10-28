@@ -9,7 +9,9 @@ import com.crackcell.jiezi.WordsegException
   *
   * @author Menglong TAN
   */
-abstract class DictLoader[D, S](val toStream: ToStream[S]) extends Serializable {
+abstract class DictLoader[D, S] extends Serializable {
+
+  def toStream(): ToStream[S]
 
   def loadDict(source: S): D = {
     val dict = newDict

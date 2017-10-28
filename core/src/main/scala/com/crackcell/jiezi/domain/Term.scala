@@ -5,13 +5,15 @@ package com.crackcell.jiezi.domain
   *
   * @author Menglong TAN
   */
-case class Term(word: String = "", natures: Array[Nature] = Array[Nature](), frequency : Long = 0) extends Serializable {
+case class Term(word: String = "", pos: POSArray = new POSArray, frequency: Long = 0) extends Serializable {
 
-  def this(term: Term) = this(term.word, term.natures, term.frequency)
+  def this(term: Term) = this(term.word, term.pos, term.frequency)
 
-  def this(word: String, nature: Nature) = this(word, Array(nature))
+  def this(word: String, pos: POS) = this(word, new POSArray(Array(pos)))
 
-  def this(word: String, nature: String) = this(word, new Nature(nature))
+  def this(word: String, pos: String) = this(word, new POS(pos))
 
-  override def toString: String = s"${word} [n: ${natures.mkString(",")}] [f: ${frequency}]"
+  override def toString: String = s"${word} [pos: ${pos}] [freq: ${frequency}]"
+
+  def ==(other: Term): Boolean = other.word == word && other.pos == pos
 }

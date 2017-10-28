@@ -55,7 +55,7 @@ object Main {
       loader.loadDict(path)
     }
     logger.info("finish loading dicts")
-    val segment = new ForwardMMSegment(dicts: _*).setHandleInvalid("skip")
+    val segment = new ForwardMMSegment(termDicts = dicts).setHandleInvalid("skip")
 
     val server = new Server(config.port)
     server.setHandler(new IndexHandler(segment))

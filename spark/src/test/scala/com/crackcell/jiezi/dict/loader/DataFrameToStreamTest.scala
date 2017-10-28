@@ -46,9 +46,10 @@ class DataFrameToStreamTest extends FunSuite {
   )
 
   val loader = new TermDictLoader(new DataFrameToStream)
-  val infoD = loader.loadDict(infoDict)
-  val coreD = loader.loadDict(coreDict)
-  val segment = new ForwardMMSegment(coreD, infoD)
+  val segment = new ForwardMMSegment(Array(
+    loader.loadDict(infoDict),
+    loader.loadDict(coreDict)
+  ))
 
   test("Wordseg with default dict") {
     segment.parse("17连衣裙").terms.foreach(println)

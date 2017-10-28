@@ -1,7 +1,5 @@
 package com.crackcell.jiezi.dict.loader
 
-import java.io.ByteArrayInputStream
-
 import com.crackcell.jiezi.WordsegException
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.sql.types._
