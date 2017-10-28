@@ -2,7 +2,7 @@ package com.crackcell.jiezi.dict.loader
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.TermDict
-import com.crackcell.jiezi.domain.{POS, POSArray, Term}
+import com.crackcell.jiezi.domain.Term
 
 /**
   * TermDict加载器
@@ -22,7 +22,7 @@ class TermDictLoader[S](override val toStream: ToStream[S]) extends DictLoader[T
     dict.put(
       new Term(
         word = tokens(0).toLowerCase(),
-        pos = new POSArray(tokens(1).split(",").map(token => new POS(pos = token.trim))),
+        pos = tokens(1).split(",").map(_.trim),
         frequency = tokens(2).trim.toLong
       )
     )

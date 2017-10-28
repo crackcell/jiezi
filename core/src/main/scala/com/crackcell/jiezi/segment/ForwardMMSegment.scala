@@ -35,11 +35,11 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
 
   override def parse(query: String): Result = {
     val q = query.toLowerCase
+    val qlen = q.length
     val terms = new ArrayBuffer[Term]()
 
     var offset = 0
     var ch = '*'
-    var word: String = null
     var state = DETECT_STATE
     var detectedCharType = UNKNOWN_ACTION
     var term: Option[Term] = None
@@ -48,19 +48,19 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
     var buffPos = "?"
     var buffOffset = 0
 
-    while (offset < query.length) {
+    while (offset < qlen) {
 
       state match {
 
         case DETECT_STATE =>
-          ch = query.charAt(offset)
+          ch = q.charAt(offset)
 
           if (StringUtils.isDelimiter(ch) || stopDict.isStopWord(ch)) {
             skipStep = 1
             detectedCharType = SKIP_ACTION
             state = OUTPUT_STATE
           } else if (isStartChar(ch)) {
-            term = findLongestHeadWord(query.substring(offset, query.length))
+            term = findLongestHeadWord(q.substring(offset, qlen))
             if (term.isEmpty && StringUtils.isEnglish(ch)) {
               state = EN_STATE
             } else if (term.isEmpty && StringUtils.isNumber(ch)) {
@@ -79,6 +79,7 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
               detectedCharType = SKIP_ACTION
               state = OUTPUT_STATE
             } else {
+              term = Some(term.get.setOffset(offset))
               detectedCharType = TERM_ACTION
               state = OUTPUT_STATE
             }
@@ -119,7 +120,11 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
 
             case SKIP_ACTION =>
               if (buffOffset < offset) {
-                terms.append(new Term(query.substring(buffOffset, offset), buffPos))
+                terms.append(new Term(
+                  word = q.substring(buffOffset, offset),
+                  pos = Array(buffPos),
+                  offset = buffOffset
+                ))
               } else if (term.isDefined) {
                 terms.append(new Term(term.get))
               }
@@ -129,7 +134,11 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
 
             case TERM_ACTION =>
               if (buffOffset < offset) {
-                terms.append(new Term(query.substring(buffOffset, offset), buffPos))
+                terms.append(new Term(
+                  word = q.substring(buffOffset, offset),
+                  pos = Array(buffPos),
+                  offset = buffOffset
+                ))
               }
               terms.append(new Term(term.get))
               offset = offset + term.get.word.length
@@ -139,7 +148,11 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
 
             case EN_ACTION =>
               if (buffOffset < offset && buffPos != "en") {
-                terms.append(new Term(query.substring(buffOffset, offset), buffPos))
+                terms.append(new Term(
+                  word = q.substring(buffOffset, offset),
+                  pos = Array(buffPos),
+                  offset = buffOffset
+                ))
                 buffOffset = offset
                 buffPos = "en"
               } else {
@@ -148,7 +161,11 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
 
             case NUM_ACTION =>
               if (buffOffset < offset && buffPos != "m") {
-                terms.append(new Term(query.substring(buffOffset, offset), buffPos))
+                terms.append(new Term(
+                  word = q.substring(buffOffset, offset),
+                  pos = Array(buffPos),
+                  offset = buffOffset
+                ))
                 buffOffset = offset
                 buffPos = "m"
               } else {
@@ -162,9 +179,13 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
         case _ => throw new WordsegException(s"invalid state: ${state}")
       }
 
-      if (offset == query.length) {
+      if (offset == qlen) {
         if (buffOffset < offset) {
-          terms.append(new Term(query.substring(buffOffset, query.length), buffPos))
+          terms.append(new Term(
+            word = q.substring(buffOffset, qlen),
+            pos = Array(buffPos),
+            offset = buffOffset
+          ))
         } else if (term.isDefined) {
           terms.append(new Term(term.get))
         }
@@ -172,7 +193,7 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
 
     }
 
-    new Result(terms.toArray)
+    Result(query, terms.toArray)
   }
 
   protected def containsChar(ch: Char): Boolean = {

@@ -1,7 +1,7 @@
 package com.crackcell.jiezi.segment
 
 import com.crackcell.jiezi.dict.loader.{FileToStream, StopDictLoader, TermDictLoader}
-import com.crackcell.jiezi.domain.{POSArray, Term}
+import com.crackcell.jiezi.domain.Term
 import org.scalatest.FunSuite
 
 /**
@@ -15,81 +15,82 @@ class ForwardMMSegmentTest extends FunSuite {
 
   val termDictLoader = new TermDictLoader(new FileToStream)
   val stopDictLoader = new StopDictLoader(new FileToStream)
-  val segment = new ForwardMMSegment(
-    Array(
-      termDictLoader.loadDict(dictPathRoot + "/core.dict"),
-      termDictLoader.loadDict(dictPathRoot + "/ansj.dict")
-    ),
-    stopDictLoader.loadDict(dictPathRoot + "/stop.dict")
-  )
 
   val testcase = Array(
     (
       "core", "新全新",
       Array(
-        new Term("新", new POSArray("a", "an", "b", "d", "j", "ng", "nr", "v")),
-        new Term("全新", new POSArray("b", "d"))
+        new Term("新", Array("a", "an", "b", "d", "j", "ng", "nr", "v")),
+        new Term("全新", Array("b", "d"))
       )
     ),
     (
       "core with sep", "新 好人",
       Array(
-        new Term("新", new POSArray("a", "an", "b", "d", "j", "ng", "nr", "v"))
+        new Term("新", Array("a", "an", "b", "d", "j", "ng", "nr", "v"))
       )
     ),
     (
       "en", "dfgdfg",
       Array(
-        new Term("dfgdfg", "en")
+        new Term("dfgdfg", Array("en"))
       )
     ),
     (
       "en with sep", "dfg exy",
       Array(
-        new Term("dfg", "en"),
-        new Term("exy", "en")
+        new Term("dfg", Array("en")),
+        new Term("exy", Array("en"))
       )
     ),
     (
       "m", "123",
       Array(
-        new Term("123", "m")
+        new Term("123", Array("m"))
       )
     ),
     (
       "m with sep", "123 890",
       Array(
-        new Term("123", "m"),
-        new Term("890", "m")
+        new Term("123", Array("m")),
+        new Term("890", Array("m"))
       )
     ),
     (
       "en with m with sep", "eng 890",
       Array(
-        new Term("eng", "en"),
-        new Term("890", "m")
+        new Term("eng", Array("en")),
+        new Term("890", Array("m"))
       )
     ),
     (
       "en with m with sep with term", "eng 890新",
       Array(
-        new Term("eng", "en"),
-        new Term("890", "m"),
-        new Term("新", new POSArray("a", "an", "b", "d", "j", "ng", "nr", "v"))
+        new Term("eng", Array("en")),
+        new Term("890", Array("m")),
+        new Term("新", Array("a", "an", "b", "d", "j", "ng", "nr", "v"))
       )
     ),
     (
       "invalid char", "eng《890新",
       Array(
-        new Term("eng", "en"),
-        new Term("890", "m"),
-        new Term("新", new POSArray("a", "an", "b", "d", "j", "ng", "nr", "v"))
+        new Term("eng", Array("en")),
+        new Term("890", Array("m")),
+        new Term("新", Array("a", "an", "b", "d", "j", "ng", "nr", "v"))
       )
     )
 
   )
 
   test("cases") {
+    val segment = new ForwardMMSegment(
+      Array(
+        termDictLoader.loadDict(dictPathRoot + "/core.dict"),
+        termDictLoader.loadDict(dictPathRoot + "/ansj.dict")
+      ),
+      stopDictLoader.loadDict(dictPathRoot + "/stop.dict")
+    )
+
     testcase.foreach { testcase =>
 
       val name = testcase._1
