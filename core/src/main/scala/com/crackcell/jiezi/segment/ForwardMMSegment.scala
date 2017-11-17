@@ -28,9 +28,9 @@ class ForwardMMSegment(var termDicts: Array[TermDict] = Array(),
   private val EN_ACTION = 3
   private val NUM_ACTION = 4
 
-  def setTermDicts(value: TermDict*): this.type = setTermDicts(value.toArray)
+  def setTermDict(value: TermDict*): this.type = setTermDict(value.toArray)
 
-  def setTermDicts(value: Array[TermDict]): this.type = {
+  def setTermDict(value: Array[TermDict]): this.type = {
     termDicts = value.reverse
     this
   }
