@@ -2,7 +2,7 @@ package com.crackcell.jiezi.segment
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.{StopDict, TermDict}
-import com.crackcell.jiezi.domain.Term
+import com.crackcell.jiezi.domain.{Result, Term}
 import com.crackcell.jiezi.util.StringUtils
 
 import scala.collection.mutable.ArrayBuffer

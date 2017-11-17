@@ -1,4 +1,4 @@
-package com.crackcell.jiezi.dict.loader.io.io
+package com.crackcell.jiezi.dict.loader.io
 
 import java.io.InputStream
 

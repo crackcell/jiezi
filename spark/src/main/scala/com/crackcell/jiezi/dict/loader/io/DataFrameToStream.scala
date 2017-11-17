@@ -3,7 +3,6 @@ package com.crackcell.jiezi.dict.loader.io
 import java.io.ByteArrayInputStream
 
 import com.crackcell.jiezi.WordsegException
-import com.crackcell.jiezi.dict.loader.io.io.ToStream
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 

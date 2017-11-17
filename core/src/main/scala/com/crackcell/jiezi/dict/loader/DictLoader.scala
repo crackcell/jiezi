@@ -1,10 +1,9 @@
-package com.crackcell.jiezi.dict.loader.io
+package com.crackcell.jiezi.dict.loader
 
 import java.io.{BufferedReader, InputStreamReader}
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.loader.io.ToStream
-import com.crackcell.jiezi.dict.loader.io.io.ToStream
 
 /**
   * 词典加载接口

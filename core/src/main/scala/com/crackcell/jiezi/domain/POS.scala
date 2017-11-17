@@ -1,5 +1,8 @@
 package com.crackcell.jiezi.domain
 
+import org.json4s.JsonAST.JValue
+import org.json4s.JsonDSL._
+
 /**
   * 词性
   *

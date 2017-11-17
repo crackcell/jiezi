@@ -3,8 +3,7 @@ package com.crackcell.jiezi.demo.webapp
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import com.crackcell.jiezi.dict.loader.TermDictLoader
-import com.crackcell.jiezi.dict.loader.io.TermDictLoader
-import com.crackcell.jiezi.dict.loader.io.io.FileToStream
+import com.crackcell.jiezi.dict.loader.io.FileToStream
 import com.crackcell.jiezi.segment.{ForwardMMSegment, Segment}
 import org.apache.commons.logging.LogFactory
 import org.eclipse.jetty.server.handler.AbstractHandler

@@ -1,5 +1,6 @@
 package com.crackcell.jiezi.dict.loader.io
 
+import com.crackcell.jiezi.dict.loader.TermDictLoader
 import com.crackcell.jiezi.segment.ForwardMMSegment
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SparkSession}

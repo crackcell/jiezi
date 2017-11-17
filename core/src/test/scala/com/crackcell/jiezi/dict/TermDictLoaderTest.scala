@@ -1,8 +1,7 @@
 package com.crackcell.jiezi.dict
 
 import com.crackcell.jiezi.dict.loader.TermDictLoader
-import com.crackcell.jiezi.dict.loader.io.TermDictLoader
-import com.crackcell.jiezi.dict.loader.io.io.FileToStream
+import com.crackcell.jiezi.dict.loader.io.{FileToStream, TermDictLoader}
 import org.scalatest.FunSuite
 
 /**
