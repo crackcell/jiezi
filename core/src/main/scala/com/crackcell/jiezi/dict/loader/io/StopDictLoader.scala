@@ -1,9 +1,11 @@
-package com.crackcell.jiezi.dict.loader
+package com.crackcell.jiezi.dict.loader.io
 
 import java.util.regex.Pattern
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.StopDict
+import com.crackcell.jiezi.dict.loader.io.ToStream
+import com.crackcell.jiezi.dict.loader.io.io.ToStream
 
 class StopDictLoader[S](override val toStream: ToStream[S]) extends DictLoader [StopDict, S] {
 

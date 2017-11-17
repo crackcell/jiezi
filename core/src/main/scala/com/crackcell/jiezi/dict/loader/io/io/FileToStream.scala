@@ -1,6 +1,6 @@
-package com.crackcell.jiezi.dict.loader
+package com.crackcell.jiezi.dict.loader.io.io
 
-import java.io.{File, FileInputStream}
+import java.io.{File, FileInputStream, InputStream}
 
 import com.crackcell.jiezi.WordsegException
 
@@ -10,14 +10,14 @@ import com.crackcell.jiezi.WordsegException
   * @author Menglong TAN
   */
 class FileToStream extends ToStream[String] {
-  override def toStream(path: String) = {
+  override def toStream(path: String): InputStream = {
     val newPath =
       if (path.startsWith("file://"))
         path.substring(7)
       else
         path
 
-    val file = new File(path)
+    val file = new File(newPath)
 
     try new FileInputStream(file)
     catch {

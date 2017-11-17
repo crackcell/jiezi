@@ -1,8 +1,10 @@
-package com.crackcell.jiezi.dict.loader
+package com.crackcell.jiezi.dict.loader.io
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.TermDict
-import com.crackcell.jiezi.domain.Term
+import com.crackcell.jiezi.dict.loader.io.ToStream
+import com.crackcell.jiezi.dict.loader.io.io.ToStream
+import com.crackcell.jiezi.domain.{POS, POSArray, Term}
 
 /**
   * TermDict加载器

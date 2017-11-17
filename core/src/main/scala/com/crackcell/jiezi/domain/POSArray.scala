@@ -1,6 +1,6 @@
 package com.crackcell.jiezi.domain
 
-case class POSArray(data: Array[POS] = Array()) extends Iterable[POS] {
+case class POSArray(data: Array[POS] = Array()) extends Iterable[POS] with ToJson {
 
   def this(pos: String*) = this(pos.map(POS(_)).toArray)
 
@@ -25,4 +25,6 @@ case class POSArray(data: Array[POS] = Array()) extends Iterable[POS] {
   override def toString: String = data.mkString(",")
 
   override def iterator = data.iterator
+
+  override def jsonValue: JValue = data.map(_.jsonValue).toList
 }

@@ -1,4 +1,4 @@
-package com.crackcell.jiezi.dict.loader
+package com.crackcell.jiezi.dict.loader.io
 
 import com.crackcell.jiezi.segment.ForwardMMSegment
 import org.apache.spark.sql.types._
@@ -10,7 +10,7 @@ import org.scalatest.FunSuite
   *
   * @author Menglong TAN
   */
-class SQLToStreamTest extends FunSuite {
+class TableToStreamTest extends FunSuite {
 
   lazy val spark = SparkSession.builder().master("local[*]").enableHiveSupport().getOrCreate()
 
@@ -31,9 +31,9 @@ class SQLToStreamTest extends FunSuite {
     ))
   ).createOrReplaceTempView("default")
 
-  val loader = new TermDictLoader(new SQLToStream)
+  val loader = new TermDictLoader(new TableToStream)
   val segment = new ForwardMMSegment(Array(
-    loader.loadDict("select * from default")
+    loader.loadDict("default")
   ))
 
   test("Wordseg with default dict") {

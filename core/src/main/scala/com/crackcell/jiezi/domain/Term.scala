@@ -6,7 +6,7 @@ package com.crackcell.jiezi.domain
   * @author Menglong TAN
   */
 case class Term(var word: String, var pos: POSArray, var offset: Int, var frequency: Long)
-  extends Serializable {
+  extends Serializable with ToJson {
 
   def length: Int = word.length
 
@@ -38,4 +38,6 @@ case class Term(var word: String, var pos: POSArray, var offset: Int, var freque
   }
 
   override def toString: String = s"${word} [pos: ${pos}] [offset: ${offset}] [freq: ${frequency}]"
+
+  override def jsonValue: JValue = ("word" -> word) ~ ("pos" -> pos.jsonValue) ~ ("offset" -> offset) ~ ("freq" -> frequency)
 }

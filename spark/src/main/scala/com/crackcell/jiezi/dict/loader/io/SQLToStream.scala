@@ -1,5 +1,8 @@
-package com.crackcell.jiezi.dict.loader
+package com.crackcell.jiezi.dict.loader.io
 
+import java.io.InputStream
+
+import com.crackcell.jiezi.dict.loader.io.io.ToStream
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -13,7 +16,7 @@ class SQLToStream extends ToStream[String] {
 
   private lazy val dataFrameToStream = new DataFrameToStream
 
-  override def toStream(sql: String) = {
+  override def toStream(sql: String): InputStream = {
     val df = spark.sql(sql)
     dataFrameToStream.toStream(df)
   }

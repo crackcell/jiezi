@@ -1,4 +1,6 @@
-package com.crackcell.jiezi.dict.loader
+package com.crackcell.jiezi.dict.loader.io.io
+
+import java.io.InputStream
 
 /**
   * 从Jar包加载词典
@@ -8,7 +10,7 @@ package com.crackcell.jiezi.dict.loader
   * @author Menglong TAN
   */
 class ResourceToStream extends ToStream[String] {
-  override def toStream(path: String) = {
+  override def toStream(path: String): InputStream = {
     this.getClass.getResourceAsStream(path)
   }
 }

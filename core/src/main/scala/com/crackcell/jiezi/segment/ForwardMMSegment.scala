@@ -2,7 +2,7 @@ package com.crackcell.jiezi.segment
 
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.{StopDict, TermDict}
-import com.crackcell.jiezi.domain.{Result, Term}
+import com.crackcell.jiezi.domain.Term
 import com.crackcell.jiezi.util.StringUtils
 
 import scala.collection.mutable.ArrayBuffer
@@ -12,8 +12,8 @@ import scala.collection.mutable.ArrayBuffer
   *
   * @author Menglong TAN
   */
-class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
-                       val stopDict: StopDict = new StopDict(),
+class ForwardMMSegment(var termDicts: Array[TermDict] = Array(),
+                       var stopDict: StopDict = new StopDict(),
                        var handleInvalid: String = "skip")
   extends Segment {
 
@@ -27,6 +27,18 @@ class ForwardMMSegment(val termDicts: Array[TermDict] = Array(),
   private val TERM_ACTION = 2
   private val EN_ACTION = 3
   private val NUM_ACTION = 4
+
+  def setTermDicts(value: TermDict*): this.type = setTermDicts(value.toArray)
+
+  def setTermDicts(value: Array[TermDict]): this.type = {
+    termDicts = value.reverse
+    this
+  }
+
+  def setStopDict(value: StopDict): this.type = {
+    stopDict = value
+    this
+  }
 
   def setHandleInvalid(value: String): this.type = {
     handleInvalid = value

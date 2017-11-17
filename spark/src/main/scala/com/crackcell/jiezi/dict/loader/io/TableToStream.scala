@@ -1,4 +1,6 @@
-package com.crackcell.jiezi.dict.loader
+package com.crackcell.jiezi.dict.loader.io
+
+import java.io.InputStream
 
 import com.crackcell.jiezi.WordsegException
 import org.apache.commons.logging.LogFactory
@@ -16,7 +18,7 @@ class TableToStream extends SQLToStream {
 
   private lazy val spark = SparkSession.builder().getOrCreate()
 
-  override def toStream(path: String) = {
+  override def toStream(path: String): InputStream = {
     val tokens = path.split("/")
     val table = tokens(0)
     val condSize = tokens.length - 1
