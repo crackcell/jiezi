@@ -12,7 +12,7 @@ import org.scalatest.FunSuite
   */
 class ForwardMMSegmentTest extends FunSuite {
 
-  val dictPathRoot = this.getClass.getClassLoader.getResource("").getPath + "dict/"
+  private val dictPathRoot = this.getClass.getClassLoader.getResource("").getPath + "dict/"
 
   val termDictLoader = new TermDictLoader(new FileToStream)
   val stopDictLoader = new StopDictLoader(new FileToStream)
@@ -105,14 +105,14 @@ class ForwardMMSegmentTest extends FunSuite {
       val query = testcase._2
       val expected = testcase._3
 
-      println(s"testing: ${name}")
+      println(s"testing: $name")
       val terms = segment.parse(query).terms
       println(s"result:\n${terms.zipWithIndex.map { case (term, index) => s"${index}: ${term}" }.mkString("\n")}")
       assert(terms.length == expected.length)
-      for (i <- 0 to expected.length - 1) {
+      for (i <- expected.indices) {
         assert(terms(i) == expected(i))
       }
-      println(s"test ${name} [passed]")
+      println(s"test $name [passed]")
 
     }
   }
