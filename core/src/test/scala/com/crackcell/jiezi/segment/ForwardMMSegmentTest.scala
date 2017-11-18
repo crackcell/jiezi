@@ -79,6 +79,13 @@ class ForwardMMSegmentTest extends FunSuite {
         new Term("890", Array("m")),
         new Term("新", Array("a", "an", "b", "d", "j", "ng", "nr", "v"))
       )
+    ),
+    (
+      "sep", "a。b",
+      Array(
+        new Term("a", Array("en")),
+        new Term("b", Array("en"))
+      )
     )
 
   )

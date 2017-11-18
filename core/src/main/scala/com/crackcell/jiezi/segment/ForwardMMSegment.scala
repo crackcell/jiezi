@@ -1,5 +1,7 @@
 package com.crackcell.jiezi.segment
 
+import java.util.StringTokenizer
+
 import com.crackcell.jiezi.WordsegException
 import com.crackcell.jiezi.dict.{StopDict, TermDict}
 import com.crackcell.jiezi.domain.{Result, Term}
