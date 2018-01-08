@@ -4,7 +4,7 @@ import org.json4s.JsonAST.JValue
 import org.json4s.JsonDSL._
 
 /**
-  * Term
+  * Immutable Term data, every change will get a new Term object.
   *
   * @author Menglong TAN
   */
@@ -20,25 +20,31 @@ case class Term(var word: String, var pos: POSArray, var offset: Int, var freque
 
   def ==(other: Term): Boolean = other.word == word && other.pos == pos
 
-  def setWord(value: String): this.type = {
-    word = value
-    this
+  def setWord(value: String): Term = {
+    val obj = clone()
+    obj.word = value
+    obj
   }
 
-  def setPOS(value: POSArray): this.type = {
-    pos = value
-    this
+  def setPOS(value: POSArray): Term = {
+    val obj = clone()
+    obj.pos = value
+    obj
   }
 
-  def setFrequency(value: Long): this.type = {
-    frequency = value
-    this
+  def setFrequency(value: Long): Term = {
+    val obj = clone()
+    obj.frequency = value
+    obj
   }
 
-  def setOffset(value: Int): this.type = {
-    offset = value
-    this
+  def setOffset(value: Int): Term = {
+    val obj = clone()
+    obj.offset = value
+    obj
   }
+
+  override def clone(): Term = new Term(this)
 
   override def toString: String = s"${word} [pos: ${pos}] [offset: ${offset}] [freq: ${frequency}]"
 

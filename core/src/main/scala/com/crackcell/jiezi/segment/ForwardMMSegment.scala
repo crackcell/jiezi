@@ -85,7 +85,7 @@ class ForwardMMSegment(var termDicts: Array[TermDict] = Array(),
                 detectedCharType = SKIP_ACTION
                 state = OUTPUT_STATE
               } else {
-                throw new WordsegException(s"invalid char: ${ch}")
+                throw new WordsegException(s"invalid char: $ch")
               }
             } else if (stopDict.isStopTerm(term.get)) {
               skipStep = term.get.word.length
@@ -106,7 +106,7 @@ class ForwardMMSegment(var termDicts: Array[TermDict] = Array(),
             detectedCharType = SKIP_ACTION
             state = OUTPUT_STATE
           } else {
-            throw new WordsegException(s"invalid char: ${ch}")
+            throw new WordsegException(s"invalid char: $ch")
           }
 
         case EN_STATE =>
@@ -187,10 +187,10 @@ class ForwardMMSegment(var termDicts: Array[TermDict] = Array(),
               }
 
             case action =>
-              throw new WordsegException(s"invalid action: ${action}")
+              throw new WordsegException(s"invalid action: $action")
           }
           state = DETECT_STATE
-        case _ => throw new WordsegException(s"invalid state: ${state}")
+        case _ => throw new WordsegException(s"invalid state: $state")
       }
 
       if (offset == qlen) {
